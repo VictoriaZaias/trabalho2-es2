@@ -14,6 +14,24 @@ const listarTimes = async (req, res) => {
     res.json(json);
 }
 
+const buscarTime = async (req, res) => {
+    let json = { error: '', result: {} };
+
+    let idTime = req.params.id;
+    let time = await timeServices.buscarTime(idTime);
+    
+    console.log(time);
+
+    if (time) {
+        json.result = {
+            idTime: time.idTime,
+            nomeTime: time.nomeTime,
+        };
+    }
+    res.json(json);
+}
+
 module.exports = {
     listarTimes,
+    buscarTime,
 };
