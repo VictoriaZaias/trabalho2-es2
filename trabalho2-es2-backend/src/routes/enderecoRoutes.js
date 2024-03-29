@@ -7,5 +7,6 @@ const unidadeFederativaController = require('../controller/unidadeFederativaCont
 router.get('/listarUnidadesFederativas', unidadeFederativaController.listarUnidadeFederativa);
 
 router.get('/buscarCidade/:id', cidadeController.buscarCidade);
+router.post('/inserirCidade', cidadeController.inserirCidade);
 
 module.exports = router;
