@@ -96,8 +96,47 @@ const inserirProfissional = async(req, res) => {
     res.json(json);
 }
 
+
+const alterarProfissional = async(req, res) => {
+    let json = {error:'', result:{}};
+
+    let idProfissional = req.params.id;
+    let nomeCompleto = req.body.nomeCompleto;
+    let nomeSocial = req.body.nomeSocial;
+    let cpf = req.body.cpf;
+    let dataNascimento = req.body.dataNascimento;
+    let raca = req.body.raca;
+    let genero = req.body.genero;
+    let nroEndereco = req.body.nroEndereco;
+    let complementoEndereco = req.body.complementoEndereco;
+    let idEndereco = req.body.idEndereco;
+    let idTime = req.body.idTime;
+    let idEspecialidade = req.body.idEspecialidade;
+
+    if(nomeCompleto && cpf && dataNascimento && raca && genero && nroEndereco && idEndereco && idTime && idEspecialidade){
+        await profissionalServices.alterarProfissional(idProfissional, nomeCompleto, nomeSocial, cpf, dataNascimento, raca, genero, nroEndereco, complementoEndereco, idEndereco, idTime, idEspecialidade);
+        json.result = {
+            idProfissional,
+            nomeCompleto,
+            nomeSocial,
+            cpf,
+            dataNascimento,
+            raca,
+            genero,
+            nroEndereco,
+            complementoEndereco,
+            idTime,
+            idEspecialidade,
+        };
+    }else{
+        json.error = 'Campos obrigatórios não enviados!';
+    }
+    res.json(json);
+}
+
 module.exports = {
     listarProfissionais,
     buscarProfissional,
     inserirProfissional,
+    alterarProfissional,
 };
