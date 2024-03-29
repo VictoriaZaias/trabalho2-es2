@@ -4,6 +4,7 @@ const router = express.Router();
 const unidadeFederativaController = require('../controller/unidadeFederativaController');
 const cidadeController = require('../controller/cidadeController');
 const bairroController = require('../controller/bairroController');
+const tipoLogradouroController = require('../controller/tipoLogradouroController');
 
 router.get('/listarUnidadesFederativas', unidadeFederativaController.listarUnidadesFederativas);
 router.get('/buscarUnidadeFederativa/:id', unidadeFederativaController.buscarUnidadeFederativa);
@@ -16,5 +17,7 @@ router.get('/buscarIdCidade/:nomeCidade', cidadeController.buscarIdCidade);
 router.get('/buscarBairro/:id', bairroController.buscarBairro);
 router.post('/inserirBairro', bairroController.inserirBairro);
 router.get('/buscarIdBairro/:nomeBairro', bairroController.buscarIdBairro);
+
+router.get('/buscarTipoLogradouro/:id', tipoLogradouroController.buscarTipoLogradouro);
 
 module.exports = router;
