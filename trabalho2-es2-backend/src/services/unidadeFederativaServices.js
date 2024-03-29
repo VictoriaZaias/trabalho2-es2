@@ -1,6 +1,6 @@
 const database = require('../database/dbConfig');
 
-const listarUnidadeFederativa = () => {
+const listarUnidadesFederativas = () => {
     return new Promise((aceito, rejeitado) => {
         database.query('SELECT * FROM unidadeFederativa', (error, results) =>{
             if (error) { rejeitado(error); return; }
@@ -22,21 +22,7 @@ const buscarUnidadeFederativa = (idUnidadeFederativa) => {
     });
 }
 
-const buscarIdUnidadeFederativa = (unidadeFederativa) => {
-    return new Promise((aceito, rejeitado) => {
-        database.query('SELECT * FROM unidadefederativa WHERE unidadefederativa = ?', [unidadeFederativa], (error, results) =>{
-            if (error) { rejeitado(error); return; }
-            if (results.length > 0){
-                aceito(results[0]);
-            }else{
-                aceito(false);
-            }
-        });
-    });
-}
-
 module.exports = {
-    listarUnidadeFederativa,
+    listarUnidadesFederativas,
     buscarUnidadeFederativa,
-    buscarIdUnidadeFederativa,
 };
