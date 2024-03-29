@@ -29,6 +29,38 @@ const listarProfissionais = async (req, res) => {
     res.json(json);
 }
 
+const buscarProfissional = async (req, res) => {
+    let json = { error: '', result: {} };
+
+    let idProfissional = req.params.id;
+    let profissional = await profissionalServices.buscarProfissional(idProfissional);
+    let time = await timeServices.buscarTime(profissional.Time_idTime);
+    let especialidade = await especialidadeServices.buscarEspecialidade(profissional.Especialidade_idEspecialidade);
+
+    console.log(profissional);
+
+    if (profissional) {
+        json.result = {
+            idProfissional: profissional.idProfissional,
+            nomeCompleto: profissional.nomeCompleto,
+            nomeSocial: profissional.nomeSocial,
+            cpf: profissional.cpf,
+            dataNascimento: profissional.dataNascimento,
+            raca: profissional.raca,
+            genero: profissional.genero,
+            nroEndereco: profissional.nroEndereco,
+            complementoEndereco: profissional.complementoEndereco,
+            idEndereco: profissional.Endereco_idEndereco,
+            idTime: time.idTime,
+            time: time.nomeTime,
+            especialidade: especialidade.tipoEspecialidade,
+            siglaEspecialidade: especialidade.siglaEspecialidade,
+        };
+    }
+    res.json(json);
+}
+
 module.exports = {
     listarProfissionais,
+    buscarProfissional,
 };
