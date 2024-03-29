@@ -5,6 +5,7 @@ const unidadeFederativaController = require('../controller/unidadeFederativaCont
 const cidadeController = require('../controller/cidadeController');
 const bairroController = require('../controller/bairroController');
 const tipoLogradouroController = require('../controller/tipoLogradouroController');
+const logradouroController = require('../controller/logradouroController');
 
 router.get('/listarUnidadesFederativas', unidadeFederativaController.listarUnidadesFederativas);
 router.get('/buscarUnidadeFederativa/:id', unidadeFederativaController.buscarUnidadeFederativa);
@@ -21,5 +22,7 @@ router.get('/buscarIdBairro/:nomeBairro', bairroController.buscarIdBairro);
 router.get('/buscarTipoLogradouro/:id', tipoLogradouroController.buscarTipoLogradouro);
 router.post('/inserirTipoLogradouro', tipoLogradouroController.inserirTipoLogradouro);
 router.get('/buscarIdTipoLogradouro/:nomeTipoLogradouro', tipoLogradouroController.buscarIdTipoLogradouro);
+
+router.get('/buscarLogradouro/:id', logradouroController.buscarLogradouro);
 
 module.exports = router;
