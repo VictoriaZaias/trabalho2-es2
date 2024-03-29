@@ -4,7 +4,7 @@ const profissionalServices = require('../services/profissionalServices');
 const listarProfissionais = async (req, res) => {
     let json = {error:'', result:[]};
 
-    let profissionais = await profissionalServices.listarProfissional();
+    let profissionais = await profissionalServices.listarProfissionais();
 
     for(let i in profissionais){
         let time = await timeServices.buscarTime(profissionais[i].Time_idTime);
