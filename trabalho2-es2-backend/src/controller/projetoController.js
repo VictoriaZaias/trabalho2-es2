@@ -106,9 +106,18 @@ const alterarProjeto = async(req, res) => {
     res.json(json);
 }
 
+const excluirProjeto = async(req, res) => {
+    let json = {error:'', result:{}};
+
+    await projetoServices.excluirProjeto(req.params.id);
+    
+    res.json(json);
+}
+
 module.exports = {
     listarProjetos,
     buscarProjeto,
     inserirProjeto,
     alterarProjeto,
+    excluirProjeto,
 };

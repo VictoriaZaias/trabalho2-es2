@@ -43,9 +43,19 @@ const alterarProjeto = (idProjeto, nomeProjeto, objetivo, dataInicio, dataTermin
     });
 }
 
+const excluirProjeto = (idProjeto) => {
+    return new Promise((aceito, rejeitado) => {
+        database.query('UPDATE projeto SET isAtivo = 0 WHERE idProjeto = ?', [idProjeto], (error, results) =>{
+            if (error) { rejeitado(error); return; }
+            aceito(results);
+        });
+    });
+}
+
 module.exports = {
     listarProjetos,
     buscarProjeto,
     inserirProjeto,
     alterarProjeto,
+    excluirProjeto,
 };
