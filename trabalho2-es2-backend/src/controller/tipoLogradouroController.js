@@ -17,6 +17,32 @@ const buscarTipoLogradouro = async (req, res) => {
     res.json(json);
 }
 
+const inserirTipoLogradouro = async(req, res) => {
+    let json = {error:'', result:{}};
+
+    let tipoLogradouro = req.body.nomeTipoLogradouro;
+
+    if(tipoLogradouro){
+        let existe = await tipoLogradouroServices.buscarIdTipoLogradouro(tipoLogradouro);
+        if(!existe) {
+            let idTipoLogradouro = await tipoLogradouroServices.inserirTipoLogradouro(tipoLogradouro);
+            json.result = {
+                idTipoLogradouro: idTipoLogradouro,
+                tipoLogradouro: tipoLogradouro,
+            };
+        } else {
+            json.result = {
+                idTipoLogradouro: existe.idTipoLogradouro,
+                tipoLogradouro: tipoLogradouro,
+            };
+        }
+    }else{
+        json.error = 'Campos obrigatórios não enviados!';
+    }
+    res.json(json);
+}
+
 module.exports = {
     buscarTipoLogradouro,
+    inserirTipoLogradouro,
 };

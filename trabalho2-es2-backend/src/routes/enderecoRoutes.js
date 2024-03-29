@@ -19,5 +19,6 @@ router.post('/inserirBairro', bairroController.inserirBairro);
 router.get('/buscarIdBairro/:nomeBairro', bairroController.buscarIdBairro);
 
 router.get('/buscarTipoLogradouro/:id', tipoLogradouroController.buscarTipoLogradouro);
+router.post('/inserirTipoLogradouro', tipoLogradouroController.inserirTipoLogradouro);
 
 module.exports = router;

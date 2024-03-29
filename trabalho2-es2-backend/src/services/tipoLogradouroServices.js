@@ -13,6 +13,16 @@ const buscarTipoLogradouro = (idTipoLogradouro) => {
     });
 }
 
+const inserirTipoLogradouro = (tipoLogradouro) => {
+    return new Promise((aceito, rejeitado) => {
+        database.query('INSERT INTO tipoLogradouro (tipoLogradouro) VALUES (?)', [tipoLogradouro], (error, results) =>{
+            if (error) { rejeitado(error); return; }
+            aceito(results.insertId);
+        });
+    });
+}
+
 module.exports = {
     buscarTipoLogradouro,
+    inserirTipoLogradouro,
 };
