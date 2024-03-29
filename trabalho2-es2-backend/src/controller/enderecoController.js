@@ -45,7 +45,25 @@ const inserirEndereco = async(req, res) => {
     res.json(json);
 }
 
+const buscarIdEndereco = async (req, res) => {
+    let json = { error: '', result: {} };
+
+    let cep = req.params.cep;
+    let endereco = await enderecoServices.buscarIdEndereco(cep);
+    
+    console.log(endereco);
+
+    if (endereco) {
+        json.result = {
+            idEndereco: endereco.idEndereco,
+            cep: endereco.cep,
+        };
+    }
+    res.json(json);
+}
+
 module.exports = {
     buscarEndereco,
     inserirEndereco,
+    buscarIdEndereco,
 };
