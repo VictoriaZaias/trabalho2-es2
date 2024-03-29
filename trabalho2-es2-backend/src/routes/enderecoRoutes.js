@@ -6,6 +6,7 @@ const unidadeFederativaController = require('../controller/unidadeFederativaCont
 
 router.get('/listarUnidadesFederativas', unidadeFederativaController.listarUnidadesFederativas);
 router.get('/buscarUnidadeFederativa/:id', unidadeFederativaController.buscarUnidadeFederativa);
+router.get('/buscarIdUnidadeFederativa/:nomeUnidadeFederativa', unidadeFederativaController.buscarIdUnidadeFederativa);
 
 router.get('/buscarCidade/:id', cidadeController.buscarCidade);
 router.post('/inserirCidade', cidadeController.inserirCidade);

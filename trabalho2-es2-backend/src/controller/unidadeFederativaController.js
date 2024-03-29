@@ -33,8 +33,26 @@ const buscarUnidadeFederativa = async (req, res) => {
     res.json(json);
 }
 
+const buscarIdUnidadeFederativa = async (req, res) => {
+    let json = { error: '', result: {} };
+
+    let nomeUnidadeFederativa = req.params.nomeUnidadeFederativa;
+    let unidadeFederativa = await unidadeFederativaServices.buscarIdUnidadeFederativa(nomeUnidadeFederativa);
+    
+    console.log();
+
+    if (unidadeFederativa) {
+        json.result = {
+            idUnidadeFederativa: unidadeFederativa.idUnidadeFederativa,
+            unidadeFederativa: unidadeFederativa.unidadeFederativa,
+            siglaUnidadeFederativa: unidadeFederativa.siglaUnidadeFederativa,
+        };
+    }
+    res.json(json);
+}
 
 module.exports = {
     listarUnidadesFederativas,
     buscarUnidadeFederativa,
+    buscarIdUnidadeFederativa,
 };
