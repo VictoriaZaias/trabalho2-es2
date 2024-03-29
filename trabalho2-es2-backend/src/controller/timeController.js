@@ -49,8 +49,28 @@ const inserirTime = async(req, res) => {
     res.json(json);
 }
 
+const alterarTime = async(req, res) => {
+    let json = {error:'', result:{}};
+
+    let idTime = req.params.id;
+    let nomeTime = req.body.nomeTime;
+
+    if(nomeTime){
+        await timeServices.alterarTime(idTime, nomeTime);
+        json.result = {
+            idTime: idTime,
+            nometime: nomeTime,
+        };
+    }else{
+        console.log(nomeTime);
+        json.error = 'Campos obrigatórios não enviados!';
+    }
+    res.json(json);
+}
+
 module.exports = {
     listarTimes,
     buscarTime,
     inserirTime,
+    alterarTime,
 };
