@@ -24,5 +24,6 @@ router.post('/inserirTipoLogradouro', tipoLogradouroController.inserirTipoLograd
 router.get('/buscarIdTipoLogradouro/:nomeTipoLogradouro', tipoLogradouroController.buscarIdTipoLogradouro);
 
 router.get('/buscarLogradouro/:id', logradouroController.buscarLogradouro);
+router.post('/inserirLogradouro', logradouroController.inserirLogradouro);
 
 module.exports = router;
