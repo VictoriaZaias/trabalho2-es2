@@ -8,5 +8,6 @@ router.get('/listarUnidadesFederativas', unidadeFederativaController.listarUnida
 
 router.get('/buscarCidade/:id', cidadeController.buscarCidade);
 router.post('/inserirCidade', cidadeController.inserirCidade);
+router.get('/buscarIdCidade/:nomeCidade', cidadeController.buscarIdCidade);
 
 module.exports = router;

@@ -43,7 +43,25 @@ const inserirCidade = async(req, res) => {
     res.json(json);
 }
 
+const buscarIdCidade = async (req, res) => {
+    let json = { error: '', result: {} };
+
+    let nomeCidade = req.params.nomeCidade;
+    let cidade = await cidadeServices.buscarIdCidade(nomeCidade);
+    
+    console.log();
+
+    if (cidade) {
+        json.result = {
+            idCidade: cidade.idCidade,
+            cidade: cidade.cidade,
+        };
+    }
+    res.json(json);
+}
+
 module.exports = {
     buscarCidade,
     inserirCidade,
+    buscarIdCidade,
 };
