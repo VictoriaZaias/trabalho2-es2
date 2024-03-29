@@ -96,7 +96,6 @@ const inserirProfissional = async(req, res) => {
     res.json(json);
 }
 
-
 const alterarProfissional = async(req, res) => {
     let json = {error:'', result:{}};
 
@@ -134,9 +133,17 @@ const alterarProfissional = async(req, res) => {
     res.json(json);
 }
 
+const excluirProfissional = async(req, res) => {
+    let json = {error:'', result:{}};
+
+    await profissionalServices.excluirProfissional(req.params.id);
+    
+    res.json(json);
+}
 module.exports = {
     listarProfissionais,
     buscarProfissional,
     inserirProfissional,
     alterarProfissional,
+    excluirProfissional,
 };

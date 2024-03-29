@@ -40,9 +40,19 @@ const alterarProfissional = (idProfissional, nomeCompleto, nomeSocial, cpf, data
     });
 }
 
+const excluirProfissional = (idProfissional) => {
+    return new Promise((aceito, rejeitado) => {
+        database.query('UPDATE profissional SET isAtivo = 0 WHERE idProfissional = ?', [idProfissional], (error, results) =>{
+            if (error) { rejeitado(error); return; }
+            aceito(results);
+        });
+    });
+}
+
 module.exports = {
     listarProfissionais,
     buscarProfissional,
     inserirProfissional,
     alterarProfissional,
+    excluirProfissional,
 };
