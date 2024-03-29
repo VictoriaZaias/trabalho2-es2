@@ -1,5 +1,6 @@
 const profissionalServices = require('../services/profissionalServices');
-
+const especialidadeServices = require('../services/especialidadeServices');
+const timeServices = require('../services/timeServices');
 
 const listarProfissionais = async (req, res) => {
     let json = {error:'', result:[]};
