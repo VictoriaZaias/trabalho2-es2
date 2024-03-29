@@ -60,7 +60,44 @@ const buscarProfissional = async (req, res) => {
     res.json(json);
 }
 
+const inserirProfissional = async(req, res) => {
+    let json = {error:'', result:{}};
+
+    let nomeCompleto = req.body.nomeCompleto;
+    let nomeSocial = req.body.nomeSocial;
+    let cpf = req.body.cpf;
+    let dataNascimento = req.body.dataNascimento;
+    let raca = req.body.raca;
+    let genero = req.body.genero;
+    let nroEndereco = req.body.nroEndereco;
+    let complementoEndereco = req.body.complementoEndereco;
+    let idEndereco = req.body.idEndereco;
+    let idEspecialidade = req.body.idEspecialidade;
+    let idTime = req.body.idTime;
+
+    if(nomeCompleto && cpf && dataNascimento && raca && genero && nroEndereco && idEndereco && idEspecialidade){
+        let idProfissional = await profissionalServices.inserirProfissional(nomeCompleto, nomeSocial, cpf, dataNascimento, raca, genero, nroEndereco, complementoEndereco, idEndereco, idTime, idEspecialidade);
+        json.result = {
+            idProfissional: idProfissional,
+            nomeCompleto,
+            nomeSocial,
+            cpf,
+            dataNascimento,
+            raca,
+            genero,
+            nroEndereco,
+            complementoEndereco,
+            idTime,
+            idEspecialidade,
+        };
+    }else{
+        json.error = 'Campos obrigatórios não enviados!';
+    }
+    res.json(json);
+}
+
 module.exports = {
     listarProfissionais,
     buscarProfissional,
+    inserirProfissional,
 };
