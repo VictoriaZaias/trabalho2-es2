@@ -22,7 +22,19 @@ const buscarProjeto= (idProjeto) => {
     });
 }
 
+const inserirProjeto = (nomeProjeto, objetivo, dataInicio, dataTermino, valor, idCliente, idTime) => {
+    return new Promise((aceito, rejeitado) => {
+        database.query
+        ('INSERT INTO projeto (nomeProjeto, objetivo, dataInicio, dataTermino, valor, isAtivo, Cliente_idCliente, Time_idTime) VALUES (?,?,?,?,?,?,?,?)', 
+        [nomeProjeto, objetivo, dataInicio, dataTermino, valor, 1, idCliente, idTime], (error, results) =>{
+            if (error) { rejeitado(error); return; }
+            aceito(results.insertId);
+        });
+    });
+}
+
 module.exports = {
     listarProjetos,
     buscarProjeto,
+    inserirProjeto,
 };
