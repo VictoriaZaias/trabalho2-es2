@@ -24,6 +24,31 @@ const listarProjetos = async (req, res) => {
     res.json(json);
 }
 
+const buscarProjeto = async (req, res) => {
+    let json = { error: '', result: {} };
+
+    let idProjeto = req.params.id;
+    let projeto = await projetoServices.buscarProjeto(idProjeto);
+    let cliente = await clienteServices.buscarCliente(projeto.Cliente_idCliente);
+    let time = await timeServices.buscarTime(projeto.Time_idTime);
+    console.log(projeto);
+
+    if (projeto) {
+        json.result = {
+            idProjeto: projeto.idProjeto,
+            nomeProjeto: projeto.nomeProjeto,
+            objetivo: projeto.objetivo,
+            dataInicio: projeto.dataInicio,
+            dataTermino: projeto.dataTermino,
+            valor: projeto.valor,
+            cliente: cliente.nomeCompleto,
+            time: time.nomeTime
+        };
+    }
+    res.json(json);
+}
+
 module.exports = {
     listarProjetos,
+    buscarProjeto,
 };
