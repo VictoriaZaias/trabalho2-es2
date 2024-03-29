@@ -29,5 +29,6 @@ router.post('/inserirLogradouro', logradouroController.inserirLogradouro);
 router.get('/buscarIdLogradouro/:nomeLogradouro', logradouroController.buscarIdLogradouro);
 
 router.get('/buscarEndereco/:cep', enderecoController.buscarEndereco);
+router.post('/inserirEndereco', enderecoController.inserirEndereco);
 
 module.exports = router;
