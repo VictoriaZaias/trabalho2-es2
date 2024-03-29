@@ -17,6 +17,32 @@ const buscarBairro = async (req, res) => {
     res.json(json);
 }
 
+const inserirBairro = async(req, res) => {
+    let json = {error:'', result:{}};
+
+    let bairro = req.body.bairro;
+
+    if(bairro){
+        let existe = await bairroServices.buscarIdBairro(bairro);
+        if(!existe) {
+            let idBairro = await bairroServices.inserirBairro(bairro);
+            json.result = {
+                idBairro: idBairro,
+                bairro: bairro,
+            };
+        } else {
+            json.result = {
+                idBairro: existe.idBairro,
+                bairro: bairro,
+            };
+        }
+    }else{
+        json.error = 'Campos obrigatórios não enviados!';
+    }
+    res.json(json);
+}
+
 module.exports = {
     buscarBairro,
+    inserirBairro,
 };
