@@ -42,7 +42,25 @@ const inserirBairro = async(req, res) => {
     res.json(json);
 }
 
+const buscarIdBairro = async (req, res) => {
+    let json = { error: '', result: {} };
+
+    let nomeBairro = req.params.nomeBairro;
+    let bairro = await bairroServices.buscarIdBairro(nomeBairro);
+    
+    console.log();
+
+    if (bairro) {
+        json.result = {
+            idBairro: bairro.idBairro,
+            bairro: bairro.bairro,
+        };
+    }
+    res.json(json);
+}
+
 module.exports = {
     buscarBairro,
     inserirBairro,
+    buscarIdBairro,
 };
