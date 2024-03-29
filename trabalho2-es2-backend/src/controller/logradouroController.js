@@ -43,7 +43,25 @@ const inserirLogradouro = async(req, res) => {
     res.json(json);
 }
 
+const buscarIdLogradouro = async (req, res) => {
+    let json = { error: '', result: {} };
+
+    let nomeLogradouro = req.params.nomeLogradouro;
+    let logradouro = await logradouroServices.buscarIdLogradouro(nomeLogradouro);
+    
+    console.log();
+
+    if (logradouro) {
+        json.result = {
+            idLogradouro: logradouro.idLogradouro,
+            logradouro: logradouro.logradouro,
+        };
+    }
+    res.json(json);
+}
+
 module.exports = {
     buscarLogradouro,
     inserirLogradouro,
+    buscarIdLogradouro,
 };
