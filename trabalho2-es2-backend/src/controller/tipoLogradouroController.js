@@ -42,7 +42,25 @@ const inserirTipoLogradouro = async(req, res) => {
     res.json(json);
 }
 
+const buscarIdTipoLogradouro = async (req, res) => {
+    let json = { error: '', result: {} };
+
+    let nomeTipoLogradouro = req.params.tipoLogradouro;
+    let tipoLogradouro = await tipoLogradouroServices.buscarIdTipoLogradouro(nomeTipoLogradouro);
+    
+    console.log();
+
+    if (tipoLogradouro) {
+        json.result = {
+            idTipoLogradouro: tipoLogradouro.idTipoLogradouro,
+            tipoLogradouro: tipoLogradouro.tipoLogradouro,
+        };
+    }
+    res.json(json);
+}
+
 module.exports = {
     buscarTipoLogradouro,
     inserirTipoLogradouro,
+    buscarIdTipoLogradouro,
 };
