@@ -1,4 +1,36 @@
 const enderecoServices = require('../services/enderecoServices');
+const bairroServices = require('../services/bairroServices');
+const logradouroServices = require('../services/logradouroServices');
+const tipoLogradouroServices = require('../services/tipoLogradouroServices');
+const cidadeServices = require('../services/cidadeServices');
+const unidadeFederativaServices = require('../services/unidadeFederativaServices');
+
+const buscarEnderecoCompleto = async (req, res) => {
+    let json = { error: '', result: {} };
+
+    let idEndereco = req.params.idEndereco;
+    let endereco = await enderecoServices.buscarEndereco(idEndereco);
+    let bairro = await bairroServices.buscarBairro(endereco.Bairro_idBairro);
+    let logradouro = await logradouroServices.buscarLogradouro(endereco.Logradouro_idLogradouro);
+    let tipoLogradouro = await tipoLogradouroServices.buscarTipoLogradouro(logradouro.TipoLogradouro_idTipoLogradouro);
+    let cidade = await cidadeServices.buscarCidade(endereco.Cidade_idCidade);
+    let unidadeFederativa = await unidadeFederativaServices.buscarUnidadeFederativa(cidade.UnidadeFederativa_idUnidadeFederativa);
+
+    if (endereco) {
+        json.result = {
+            idEndereco: endereco.idEndereco,
+            cep: endereco.cep,
+            bairro: bairro.bairro,
+            cidade: cidade.cidade,
+            tipoLogradouro: tipoLogradouro.tipoLogradouro,
+            logradouro: logradouro.logradouro,
+            unidadeFederativa: unidadeFederativa.unidadeFederativa,
+            siglaUF: unidadeFederativa.siglaUnidadeFederativa
+        };
+    }
+
+    res.json(json);
+}
 
 const buscarEndereco = async (req, res) => {
     let json = { error: '', result: {} };
@@ -63,6 +95,7 @@ const buscarIdEndereco = async (req, res) => {
 }
 
 module.exports = {
+    buscarEnderecoCompleto,
     buscarEndereco,
     inserirEndereco,
     buscarIdEndereco,
