@@ -1,5 +1,5 @@
 const projetoServices = require('../services/projetoServices');
-const clienteServices = require('../services/clienteServices');
+// const clienteServices = require('../services/clienteServices');
 const timeServices = require('../services/timeServices');
 
 const listarProjetos = async (req, res) => {
@@ -8,7 +8,7 @@ const listarProjetos = async (req, res) => {
     let projetos = await projetoServices.listarProjetos();
 
     for(let i in projetos){
-        let cliente = await clienteServices.buscarCliente(projetos[i].Cliente_idCliente);
+        // let cliente = await clienteServices.buscarCliente(projetos[i].Cliente_idCliente);
         let time = await timeServices.buscarTime(projetos[i].Time_idTime);
         json.result.push({
             idProjeto: projetos[i].idProjeto,
