@@ -45,16 +45,31 @@ const alterarProjeto = (idProjeto, nomeProjeto, objetivo, dataInicio, dataTermin
 
 const excluirProjeto = (idProjeto) => {
     return new Promise((aceito, rejeitado) => {
-        database.query('UPDATE projeto SET isAtivo = 0 WHERE idProjeto = ?', [idProjeto], (error, results) =>{
+        database.query('DELETE FROM projeto WHERE idProjeto = ?', [idProjeto], (error, results) =>{
             if (error) { rejeitado(error); return; }
             aceito(results);
         });
     });
 }
 
+const buscarProjetosPorTime= (idTime) => {
+    return new Promise((aceito, rejeitado) => {
+        database.query('SELECT * FROM projeto WHERE projeto.Time_idTime = ?', [idTime], (error, results) =>{
+            if (error) { rejeitado(error); return; }
+            if (results.length > 0){
+                aceito(results);
+            }else{
+                aceito(false);
+            }
+        });
+    });
+}
+
+
 module.exports = {
     listarProjetos,
     buscarProjeto,
+    buscarProjetosPorTime,
     inserirProjeto,
     alterarProjeto,
     excluirProjeto,

@@ -42,7 +42,7 @@ const alterarTime = (idTime, nomeTime) => {
 
 const excluirTime = (idTime) => {
     return new Promise((aceito, rejeitado) => {
-        database.query('UPDATE time SET isAtivo = 0 WHERE idTime = ?', [idTime], (error, results) =>{
+        database.query('DELETE FROM time WHERE idTime = ?', [idTime], (error, results) =>{
             if (error) { rejeitado(error); return; }
             aceito(results);
         });

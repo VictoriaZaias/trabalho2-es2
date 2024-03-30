@@ -22,6 +22,19 @@ const buscarProfissional = (idProfissional) => {
     });
 }
 
+const buscarProfissionaisPorTime = (idTime) => {
+    return new Promise((aceito, rejeitado) => {
+        database.query('SELECT * FROM profissional WHERE profissional.Time_idTime = ?', [idTime], (error, results) =>{
+            if (error) { rejeitado(error); return; }
+            if (results.length > 0){
+                aceito(results);
+            }else{
+                aceito(false);
+            }
+        });
+    });
+}
+
 const inserirProfissional = (nomeCompleto, nomeSocial, cpf, dataNascimento, raca, genero, nroEndereco, complementoEndereco, idEndereco, idTime, idEspecialidade) => {
     return new Promise((aceito, rejeitado) => {
         database.query('INSERT INTO profissional (nomeCompleto, nomeSocial, cpf, dataNascimento, raca, genero, nroEndereco, complementoEndereco, isAtivo, Endereco_idEndereco, Time_idTime, Especialidade_idEspecialidade) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [nomeCompleto, nomeSocial, cpf, dataNascimento, raca, genero, nroEndereco, complementoEndereco, 1, idEndereco, idTime, idEspecialidade], (error, results) =>{
@@ -49,10 +62,22 @@ const excluirProfissional = (idProfissional) => {
     });
 }
 
+const removerTimeProfissional = (idProfissional) => {
+    return new Promise((aceito, rejeitado) => {
+        database.query('UPDATE profissional SET Time_idTime = null  WHERE idProfissional = ?', [idProfissional], (error, results) =>{
+            if (error) { rejeitado(error); return; }
+            aceito(results);
+        });
+    });
+}
+
+
 module.exports = {
     listarProfissionais,
     buscarProfissional,
+    buscarProfissionaisPorTime,
     inserirProfissional,
     alterarProfissional,
     excluirProfissional,
+    removerTimeProfissional,
 };
