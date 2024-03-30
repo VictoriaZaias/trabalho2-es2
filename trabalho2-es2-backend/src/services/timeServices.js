@@ -24,7 +24,7 @@ const buscarTime= (idTime) => {
 
 const inserirTime = (nomeTime) => {
     return new Promise((aceito, rejeitado) => {
-        database.query('INSERT INTO time (nomeTime, isAtivo) VALUES (?, 1)', [nomeTime], (error, results) =>{
+        database.query('INSERT INTO time (nomeTime) VALUES (?)', [nomeTime], (error, results) =>{
             if (error) { rejeitado(error); return; }
             aceito(results.insertId);
         });
