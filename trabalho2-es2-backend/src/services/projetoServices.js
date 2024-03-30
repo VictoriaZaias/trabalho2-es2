@@ -22,11 +22,11 @@ const buscarProjeto= (idProjeto) => {
     });
 }
 
-const inserirProjeto = (nomeProjeto, objetivo, dataInicio, dataTermino, valor, idCliente, idTime) => {
+const inserirProjeto = (nomeProjeto,nomeCliente, objetivo, dataInicio, dataTermino, valor,idTime) => {
     return new Promise((aceito, rejeitado) => {
         database.query
-        ('INSERT INTO projeto (nomeProjeto, objetivo, dataInicio, dataTermino, valor, isAtivo, Cliente_idCliente, Time_idTime) VALUES (?,?,?,?,?,?,?,?)', 
-        [nomeProjeto, objetivo, dataInicio, dataTermino, valor, 1, idCliente, idTime], (error, results) =>{
+        ('INSERT INTO projeto (nomeProjeto, nomeCliente, objetivo, dataInicio, dataTermino, valor, isConcluido, Time_idTime) VALUES (?,?,?,?,?,?,?,?)', 
+        [nomeProjeto, nomeCliente, objetivo, dataInicio, dataTermino, valor, 0, idTime], (error, results) =>{
             if (error) { rejeitado(error); return; }
             aceito(results.insertId);
         });

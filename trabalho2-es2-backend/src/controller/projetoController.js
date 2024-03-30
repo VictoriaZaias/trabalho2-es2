@@ -51,23 +51,23 @@ const inserirProjeto = async(req, res) => {
     let json = {error:'', result:{}};
 
     let nomeProjeto = req.body.nomeProjeto;
+    let nomeCliente = req.body.nomeCliente;
     let objetivo = req.body.objetivo;
     let dataInicio = req.body.dataInicio;
     let dataTermino = req.body.dataTermino;
     let valor = req.body.valor;
-    let idCliente = req.body.idCliente;
     let idTime = req.body.idTime;
 
-    if(nomeProjeto && objetivo && dataInicio && dataTermino && valor && idCliente && idTime){
-        let idProjeto = await projetoServices.inserirProjeto(nomeProjeto,objetivo,dataInicio,dataTermino,valor,idCliente,idTime);
+    if(nomeProjeto && objetivo && dataInicio && dataTermino && valor && nomeCliente && idTime){
+        let idProjeto = await projetoServices.inserirProjeto(nomeProjeto,nomeCliente,objetivo,dataInicio,dataTermino,valor,idTime);
         json.result = {
             idProjeto: idProjeto,
             nomeProjeto,
+            nomeCliente,
             objetivo,
             dataInicio,
             dataTermino,
             valor,
-            idCliente,
             idTime
         };
     }else{
