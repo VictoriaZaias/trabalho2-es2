@@ -33,10 +33,10 @@ const inserirProjeto = (nomeProjeto,nomeCliente, objetivo, dataInicio, dataTermi
     });
 }
 
-const alterarProjeto = (idProjeto, nomeProjeto, objetivo, dataInicio, dataTermino, valor, idCliente, idTime) => {
+const alterarProjeto = (idProjeto, nomeProjeto, nomeCliente, objetivo, dataInicio, dataTermino, valor, isconcluido, idTime) => {
     return new Promise((aceito, rejeitado) => {
-        database.query('UPDATE projeto SET nomeProjeto = ?, objetivo = ?, dataInicio = ?, dataTermino = ?, valor = ?, Cliente_idCliente = ?, Time_idTime = ?  WHERE idProjeto = ?',
-         [nomeProjeto, objetivo, dataInicio, dataTermino, valor, idCliente, idTime, idProjeto], (error, results) =>{
+        database.query('UPDATE projeto SET nomeProjeto = ?, nomeCliente = ?, objetivo = ?, dataInicio = ?, dataTermino = ?, valor = ?, isConcluido = ?, Time_idTime = ?  WHERE idProjeto = ?',
+         [nomeProjeto, nomeCliente, objetivo, dataInicio, dataTermino, valor, isconcluido, idTime, idProjeto], (error, results) =>{
             if (error) { rejeitado(error); return; }
             aceito(results);
         });

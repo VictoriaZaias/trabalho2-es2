@@ -80,23 +80,25 @@ const alterarProjeto = async(req, res) => {
 
     let idProjeto = req.params.id;
     let nomeProjeto = req.body.nomeProjeto;
+    let nomeCliente = req.body.nomeCliente;
     let objetivo = req.body.objetivo;
     let dataInicio = req.body.dataInicio;
     let dataTermino = req.body.dataTermino;
     let valor = req.body.valor;
-    let idCliente = req.body.idCliente;
+    let isConcluido = req.body.isConcluido;
     let idTime = req.body.idTime;
 
-    if(nomeProjeto && objetivo && dataInicio && dataTermino && valor && idCliente && idTime){
-        await projetoServices.alterarProjeto(idProjeto, nomeProjeto,objetivo,dataInicio,dataTermino,valor,idCliente,idTime);
+    if(nomeProjeto && objetivo && dataInicio && dataTermino && valor && nomeCliente && idTime){
+        await projetoServices.alterarProjeto(idProjeto, nomeProjeto,nomeCliente,objetivo,dataInicio,dataTermino,valor,isConcluido,idTime);
         json.result = {
             idProjeto,
             nomeProjeto,
+            cliente: nomeCliente,
             objetivo,
             dataInicio,
             dataTermino,
             valor,
-            idCliente,
+            isConcluido,
             idTime
         };
     }else{
