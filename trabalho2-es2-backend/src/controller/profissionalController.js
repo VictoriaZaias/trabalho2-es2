@@ -96,24 +96,21 @@ const alterarProfissional = async(req, res) => {
 
     let idProfissional = req.params.id;
     let nomeCompleto = req.body.nomeCompleto;
-    let nomeSocial = req.body.nomeSocial;
-    let cpf = req.body.cpf;
     let dataNascimento = req.body.dataNascimento;
     let raca = req.body.raca;
     let genero = req.body.genero;
     let nroEndereco = req.body.nroEndereco;
     let complementoEndereco = req.body.complementoEndereco;
     let idEndereco = req.body.idEndereco;
-    let idTime = req.body.idTime;
     let idEspecialidade = req.body.idEspecialidade;
+    let idTime = req.body.idTime;
 
-    if(nomeCompleto && cpf && dataNascimento && raca && genero && nroEndereco && idEndereco && idTime && idEspecialidade){
-        await profissionalServices.alterarProfissional(idProfissional, nomeCompleto, nomeSocial, cpf, dataNascimento, raca, genero, nroEndereco, complementoEndereco, idEndereco, idTime, idEspecialidade);
+
+    if(nomeCompleto  && dataNascimento && raca && genero && nroEndereco && idEndereco && idTime && idEspecialidade){
+        await profissionalServices.alterarProfissional(idProfissional, nomeCompleto, dataNascimento, raca, genero, nroEndereco, complementoEndereco, idEndereco, idEspecialidade, idTime);
         json.result = {
             idProfissional,
             nomeCompleto,
-            nomeSocial,
-            cpf,
             dataNascimento,
             raca,
             genero,
