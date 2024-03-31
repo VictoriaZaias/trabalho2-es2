@@ -55,7 +55,7 @@ const alterarProfissional = (idProfissional, nomeCompleto, dataNascimento, raca,
 
 const excluirProfissional = (idProfissional) => {
     return new Promise((aceito, rejeitado) => {
-        database.query('UPDATE profissional SET isAtivo = 0 WHERE idProfissional = ?', [idProfissional], (error, results) =>{
+        database.query('DELETE FROM profissional WHERE idProfissional = ?', [idProfissional], (error, results) =>{
             if (error) { rejeitado(error); return; }
             aceito(results);
         });
