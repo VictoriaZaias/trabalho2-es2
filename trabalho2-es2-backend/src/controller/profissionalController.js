@@ -13,18 +13,15 @@ const listarProfissionais = async (req, res) => {
         json.result.push({
             idProfissional: profissionais[i].idProfissional,
             nomeCompleto: profissionais[i].nomeCompleto,
-            nomeSocial: profissionais[i].nomeSocial,
-            cpf: profissionais[i].cpf,
             dataNascimento: profissionais[i].dataNascimento,
             raca: profissionais[i].raca,
             genero: profissionais[i].genero,
             nroEndereco: profissionais[i].nroEndereco,
             complementoEndereco: profissionais[i].complementoEndereco,
-            cep: profissionais[i].cep,
+            idEndereco : profissionais[i].Endereco_idEndereco,
             idTime: time.idTime,
             time: time.nomeTime,
             especialidade: especialidade.tipoEspecialidade,
-            siglaEspecialidade: especialidade.siglaEspecialidade,
         });
     }  
     res.json(json);
