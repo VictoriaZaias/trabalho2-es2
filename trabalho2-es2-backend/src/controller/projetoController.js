@@ -16,7 +16,7 @@ const listarProjetos = async (req, res) => {
             dataInicio: projetos[i].dataInicio,
             dataTermino: projetos[i].dataTermino,
             valor: projetos[i].valor,
-            cliente: cliente.nomeCompleto,
+            cliente: projetos[i].nomeCompleto,
             time: time.nomeTime
         });
     }  
