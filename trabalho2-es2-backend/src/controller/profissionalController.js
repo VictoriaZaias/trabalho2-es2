@@ -59,8 +59,6 @@ const inserirProfissional = async(req, res) => {
     let json = {error:'', result:{}};
 
     let nomeCompleto = req.body.nomeCompleto;
-    let nomeSocial = req.body.nomeSocial;
-    let cpf = req.body.cpf;
     let dataNascimento = req.body.dataNascimento;
     let raca = req.body.raca;
     let genero = req.body.genero;
@@ -70,13 +68,11 @@ const inserirProfissional = async(req, res) => {
     let idEspecialidade = req.body.idEspecialidade;
     let idTime = req.body.idTime;
 
-    if(nomeCompleto && cpf && dataNascimento && raca && genero && nroEndereco && idEndereco && idEspecialidade){
-        let idProfissional = await profissionalServices.inserirProfissional(nomeCompleto, nomeSocial, cpf, dataNascimento, raca, genero, nroEndereco, complementoEndereco, idEndereco, idTime, idEspecialidade);
+    if(nomeCompleto && dataNascimento && raca && genero && nroEndereco && idEndereco && idEspecialidade){
+        let idProfissional = await profissionalServices.inserirProfissional(nomeCompleto, dataNascimento, raca, genero, nroEndereco, complementoEndereco, idEndereco, idEspecialidade, idTime);
         json.result = {
             idProfissional: idProfissional,
             nomeCompleto,
-            nomeSocial,
-            cpf,
             dataNascimento,
             raca,
             genero,
