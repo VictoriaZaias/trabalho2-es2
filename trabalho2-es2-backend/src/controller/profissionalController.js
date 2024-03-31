@@ -41,8 +41,6 @@ const buscarProfissional = async (req, res) => {
         json.result = {
             idProfissional: profissional.idProfissional,
             nomeCompleto: profissional.nomeCompleto,
-            nomeSocial: profissional.nomeSocial,
-            cpf: profissional.cpf,
             dataNascimento: profissional.dataNascimento,
             raca: profissional.raca,
             genero: profissional.genero,
@@ -52,7 +50,6 @@ const buscarProfissional = async (req, res) => {
             idTime: time.idTime,
             time: time.nomeTime,
             especialidade: especialidade.tipoEspecialidade,
-            siglaEspecialidade: especialidade.siglaEspecialidade,
         };
     }
     res.json(json);
