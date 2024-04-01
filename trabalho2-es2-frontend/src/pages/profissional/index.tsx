@@ -276,7 +276,7 @@ const PageProfissional = () => {
   const handleClickExcluir = async (id: number) => {
     const responseExclusao = await fetchDados(
       `profissional/excluir/${id}`,
-      "PUT"
+      "DELETE"
     );
     console.log("Excluiu profissional");
     const responseListar = await fetchDados("profissional/listar", "GET");
