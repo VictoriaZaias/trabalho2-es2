@@ -213,7 +213,10 @@ const PageProjeto = () => {
   };
 
   const handleClickExcluir = async (id: number) => {
-    const responseExclusao = await fetchDados(`projeto/excluir/${id}`, "PUT");
+    const responseExclusao = await fetchDados(
+      `projeto/excluir/${id}`,
+      "DELETE"
+    );
     console.log("Excluiu projeto");
     const responseListar = await fetchDados("projeto/listar", "GET");
     setProjetos(responseListar.result);
