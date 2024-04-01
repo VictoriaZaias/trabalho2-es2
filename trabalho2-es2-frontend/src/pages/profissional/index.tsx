@@ -62,7 +62,7 @@ const PageProfissional = () => {
   const [profissionais, setProfissionais] = useState<Profissional[]>([]);
   const [especialidades, setEspecialidades] = useState<Especialidade[]>([]);
   const [especialidadeSelecionada, setEspecialidadeSelecionada] =
-    React.useState<number | null>(null);
+    React.useState<number | null>(-1);
   const [ufs, setUfs] = useState<UnidadeFederativa[]>([]);
   const [ufSelecionada, setUfSelecionada] = React.useState<Number>();
 
@@ -249,23 +249,20 @@ const PageProfissional = () => {
         idCidade: responseCidade.result.idCidade,
       }
     );
+    console.log(especialidadeSelecionada);
     const responseAlteracao = await fetchDados(
       `profissional/alterar/${id}`,
       "PUT",
       {
         nomeCompleto: name,
-        nomeSocial: "",
-        cpf: cpf,
         dataNascimento: formattedBornDate,
         raca: race,
         genero: gender,
         nroEndereco: numero,
         complementoEndereco: "",
-        cep,
         idEndereco: responseEndereco.result.idEndereco,
-        //idTime: 1,
-        //idTime: timeSelecionado,
         idEspecialidade: especialidadeSelecionada,
+        idTime: -1,
       }
     );
     console.log("Alterou profissional");
