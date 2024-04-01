@@ -549,11 +549,6 @@ const PageProfissional = () => {
                   "GET"
                 );
                 setEspecialidades(responseEspecialidades.result);
-                const responseUfs = await fetchDados(
-                  `endereco/listarUnidadesFederativas`,
-                  "GET"
-                );
-                setUfs(responseUfs.result);
               }}
             >
               <AddIcon />
