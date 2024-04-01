@@ -13,6 +13,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+import PageProjeto from "@/pages/projeto";
 
 export default function Home() {
   const [selectedTab, setSelectedTab] = React.useState("profissional");
@@ -47,6 +48,7 @@ export default function Home() {
           <Tab value="projeto" label="Projetos" />
         </Tabs>
       </Box>
+      {selectedTab === "projeto" && <PageProjeto />}
     </>
   );
 }
