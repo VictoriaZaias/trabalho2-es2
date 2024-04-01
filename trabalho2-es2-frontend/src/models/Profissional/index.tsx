@@ -5,8 +5,6 @@ import { Time } from "../Time";
 export interface Profissional {
   idProfissional: number;
   nomeCompleto: string;
-  nomeSocial: string;
-  cpf: string;
   dataNascimento: string;
   raca: string;
   genero: string;
