@@ -13,6 +13,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+import PageTime from "@/pages/time";
 
 export default function Home() {
   const [selectedTab, setSelectedTab] = React.useState("profissional");
@@ -46,6 +47,7 @@ export default function Home() {
           <Tab value="time" label="Times" />
           <Tab value="projeto" label="Projetos" />
         </Tabs>
+        {selectedTab === "time" && <PageTime />}
       </Box>
     </>
   );
