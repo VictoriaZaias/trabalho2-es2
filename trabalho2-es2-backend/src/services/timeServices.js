@@ -2,7 +2,7 @@ const database = require('../database/dbConfig');
 
 const listarTimes = () => {
     return new Promise((aceito, rejeitado) => {
-        database.query('SELECT * FROM time WHERE isAtivo = 1', (error, results) =>{
+        database.query('SELECT * FROM time', (error, results) =>{
             if (error) { rejeitado(error); return; }
             aceito(results);
         });
@@ -11,7 +11,7 @@ const listarTimes = () => {
 
 const buscarTime= (idTime) => {
     return new Promise((aceito, rejeitado) => {
-        database.query('SELECT * FROM time WHERE time.idTime = ? AND isAtivo = 1', [idTime], (error, results) =>{
+        database.query('SELECT * FROM time WHERE time.idTime = ?', [idTime], (error, results) =>{
             if (error) { rejeitado(error); return; }
             if (results.length > 0){
                 aceito(results[0]);
@@ -24,7 +24,7 @@ const buscarTime= (idTime) => {
 
 const inserirTime = (nomeTime) => {
     return new Promise((aceito, rejeitado) => {
-        database.query('INSERT INTO time (nomeTime, isAtivo) VALUES (?, 1)', [nomeTime], (error, results) =>{
+        database.query('INSERT INTO time (nomeTime) VALUES (?)', [nomeTime], (error, results) =>{
             if (error) { rejeitado(error); return; }
             aceito(results.insertId);
         });
@@ -42,7 +42,7 @@ const alterarTime = (idTime, nomeTime) => {
 
 const excluirTime = (idTime) => {
     return new Promise((aceito, rejeitado) => {
-        database.query('UPDATE time SET isAtivo = 0 WHERE idTime = ?', [idTime], (error, results) =>{
+        database.query('DELETE FROM time WHERE idTime = ?', [idTime], (error, results) =>{
             if (error) { rejeitado(error); return; }
             aceito(results);
         });
