@@ -75,7 +75,7 @@ const PageProjeto = () => {
   const [price, setPrice] = useState("");
   const [projetos, setProjetos] = useState<Projeto[]>([]);
   const [times, setTimes] = useState<Time[]>([]);
-  const [timeSelecionado, setTimeSelecionado] = useState<number | null>(null);
+  const [timeSelecionado, setTimeSelecionado] = useState<number | null>(-1);
   const [clientes, setClientes] = useState<Cliente[]>();
   const [cliente, setCliente] = useState("");
   dayjs.extend(customParseFormat);
@@ -148,7 +148,7 @@ const PageProjeto = () => {
 
     const responseCadastro = await fetchDados("projeto/inserir", "POST", {
       nomeProjeto: name,
-      cliente: cliente,
+      nomeCliente: cliente,
       objetivo: description,
       dataInicio: formattedBeginDate,
       dataTermino: formattedEndDate,
@@ -158,6 +158,7 @@ const PageProjeto = () => {
     console.log("Cadastrou projeto");
     const responseListar = await fetchDados("projeto/listar", "GET");
     setProjetos(responseListar.result);
+    console.log(projetos);
   };
 
   const handleClickBuscar = async (id: number) => {
@@ -200,7 +201,7 @@ const PageProjeto = () => {
 
     const responseAlteracao = await fetchDados(`projeto/alterar/${id}`, "PUT", {
       nomeProjeto: name,
-      cliente: cliente,
+      nomeCliente: cliente,
       objetivo: description,
       dataInicio: formattedBeginDate,
       dataTermino: formattedEndDate,
@@ -409,6 +410,8 @@ const PageProjeto = () => {
                 setDescription("");
                 setConfirmationSaveId(null);
                 setOpenFormDialog(true);
+                setCliente("");
+                setTimeSelecionado(null);
               }}
             >
               <AddIcon />
