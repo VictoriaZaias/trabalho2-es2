@@ -13,18 +13,15 @@ const listarProfissionais = async (req, res) => {
         json.result.push({
             idProfissional: profissionais[i].idProfissional,
             nomeCompleto: profissionais[i].nomeCompleto,
-            nomeSocial: profissionais[i].nomeSocial,
-            cpf: profissionais[i].cpf,
             dataNascimento: profissionais[i].dataNascimento,
             raca: profissionais[i].raca,
             genero: profissionais[i].genero,
             nroEndereco: profissionais[i].nroEndereco,
             complementoEndereco: profissionais[i].complementoEndereco,
-            cep: profissionais[i].cep,
+            idEndereco : profissionais[i].Endereco_idEndereco,
             idTime: time.idTime,
             time: time.nomeTime,
             especialidade: especialidade.tipoEspecialidade,
-            siglaEspecialidade: especialidade.siglaEspecialidade,
         });
     }  
     res.json(json);
@@ -44,8 +41,6 @@ const buscarProfissional = async (req, res) => {
         json.result = {
             idProfissional: profissional.idProfissional,
             nomeCompleto: profissional.nomeCompleto,
-            nomeSocial: profissional.nomeSocial,
-            cpf: profissional.cpf,
             dataNascimento: profissional.dataNascimento,
             raca: profissional.raca,
             genero: profissional.genero,
@@ -55,7 +50,6 @@ const buscarProfissional = async (req, res) => {
             idTime: time.idTime,
             time: time.nomeTime,
             especialidade: especialidade.tipoEspecialidade,
-            siglaEspecialidade: especialidade.siglaEspecialidade,
         };
     }
     res.json(json);
@@ -65,8 +59,6 @@ const inserirProfissional = async(req, res) => {
     let json = {error:'', result:{}};
 
     let nomeCompleto = req.body.nomeCompleto;
-    let nomeSocial = req.body.nomeSocial;
-    let cpf = req.body.cpf;
     let dataNascimento = req.body.dataNascimento;
     let raca = req.body.raca;
     let genero = req.body.genero;
@@ -76,13 +68,11 @@ const inserirProfissional = async(req, res) => {
     let idEspecialidade = req.body.idEspecialidade;
     let idTime = req.body.idTime;
 
-    if(nomeCompleto && cpf && dataNascimento && raca && genero && nroEndereco && idEndereco && idEspecialidade){
-        let idProfissional = await profissionalServices.inserirProfissional(nomeCompleto, nomeSocial, cpf, dataNascimento, raca, genero, nroEndereco, complementoEndereco, idEndereco, idTime, idEspecialidade);
+    if(nomeCompleto && dataNascimento && raca && genero && nroEndereco && idEndereco && idEspecialidade){
+        let idProfissional = await profissionalServices.inserirProfissional(nomeCompleto, dataNascimento, raca, genero, nroEndereco, complementoEndereco, idEndereco, idEspecialidade, idTime);
         json.result = {
             idProfissional: idProfissional,
             nomeCompleto,
-            nomeSocial,
-            cpf,
             dataNascimento,
             raca,
             genero,
@@ -102,24 +92,21 @@ const alterarProfissional = async(req, res) => {
 
     let idProfissional = req.params.id;
     let nomeCompleto = req.body.nomeCompleto;
-    let nomeSocial = req.body.nomeSocial;
-    let cpf = req.body.cpf;
     let dataNascimento = req.body.dataNascimento;
     let raca = req.body.raca;
     let genero = req.body.genero;
     let nroEndereco = req.body.nroEndereco;
     let complementoEndereco = req.body.complementoEndereco;
     let idEndereco = req.body.idEndereco;
-    let idTime = req.body.idTime;
     let idEspecialidade = req.body.idEspecialidade;
+    let idTime = req.body.idTime;
 
-    if(nomeCompleto && cpf && dataNascimento && raca && genero && nroEndereco && idEndereco && idTime && idEspecialidade){
-        await profissionalServices.alterarProfissional(idProfissional, nomeCompleto, nomeSocial, cpf, dataNascimento, raca, genero, nroEndereco, complementoEndereco, idEndereco, idTime, idEspecialidade);
+
+    if(nomeCompleto  && dataNascimento && raca && genero && nroEndereco && idEndereco && idTime && idEspecialidade){
+        await profissionalServices.alterarProfissional(idProfissional, nomeCompleto, dataNascimento, raca, genero, nroEndereco, complementoEndereco, idEndereco, idEspecialidade, idTime);
         json.result = {
             idProfissional,
             nomeCompleto,
-            nomeSocial,
-            cpf,
             dataNascimento,
             raca,
             genero,

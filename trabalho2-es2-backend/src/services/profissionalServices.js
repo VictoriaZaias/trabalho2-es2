@@ -2,7 +2,7 @@ const database = require('../database/dbConfig');
 
 const listarProfissionais = () => {
     return new Promise((aceito, rejeitado) => {
-        database.query('SELECT * FROM profissional WHERE isAtivo = 1', (error, results) =>{
+        database.query('SELECT * FROM profissional', (error, results) =>{
             if (error) { rejeitado(error); return; }
             aceito(results);
         });
@@ -11,7 +11,7 @@ const listarProfissionais = () => {
 
 const buscarProfissional = (idProfissional) => {
     return new Promise((aceito, rejeitado) => {
-        database.query('SELECT * FROM profissional WHERE profissional.idProfissional = ? AND isAtivo = 1', [idProfissional], (error, results) =>{
+        database.query('SELECT * FROM profissional WHERE profissional.idProfissional = ?', [idProfissional], (error, results) =>{
             if (error) { rejeitado(error); return; }
             if (results.length > 0){
                 aceito(results[0]);
@@ -22,18 +22,31 @@ const buscarProfissional = (idProfissional) => {
     });
 }
 
-const inserirProfissional = (nomeCompleto, nomeSocial, cpf, dataNascimento, raca, genero, nroEndereco, complementoEndereco, idEndereco, idTime, idEspecialidade) => {
+const buscarProfissionaisPorTime = (idTime) => {
     return new Promise((aceito, rejeitado) => {
-        database.query('INSERT INTO profissional (nomeCompleto, nomeSocial, cpf, dataNascimento, raca, genero, nroEndereco, complementoEndereco, isAtivo, Endereco_idEndereco, Time_idTime, Especialidade_idEspecialidade) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [nomeCompleto, nomeSocial, cpf, dataNascimento, raca, genero, nroEndereco, complementoEndereco, 1, idEndereco, idTime, idEspecialidade], (error, results) =>{
+        database.query('SELECT * FROM profissional WHERE profissional.Time_idTime = ?', [idTime], (error, results) =>{
+            if (error) { rejeitado(error); return; }
+            if (results.length > 0){
+                aceito(results);
+            }else{
+                aceito(false);
+            }
+        });
+    });
+}
+
+const inserirProfissional = (nomeCompleto, dataNascimento, raca, genero, nroEndereco, complementoEndereco, idEndereco, idEspecialidade, idTime) => {
+    return new Promise((aceito, rejeitado) => {
+        database.query('INSERT INTO profissional (nomeCompleto, dataNascimento, raca, genero, nroEndereco, complementoEndereco, Endereco_idEndereco, Time_idTime, Especialidade_idEspecialidade) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [nomeCompleto, dataNascimento, raca, genero, nroEndereco, complementoEndereco, idEndereco, idTime, idEspecialidade], (error, results) =>{
             if (error) { rejeitado(error); return; }
             aceito(results.insertId);
         });
     });
 }
 
-const alterarProfissional = (idProfissional, nomeCompleto, nomeSocial, cpf, dataNascimento, raca, genero, nroEndereco, complementoEndereco, idEndereco, idTime, idEspecialidade) => {
+const alterarProfissional = (idProfissional, nomeCompleto, dataNascimento, raca, genero, nroEndereco, complementoEndereco, idEndereco, idEspecialidade, idTime) => {
     return new Promise((aceito, rejeitado) => {
-        database.query('UPDATE profissional SET nomeCompleto = ?, nomeSocial = ?, cpf = ?, dataNascimento = ?, raca = ?, genero = ?, nroEndereco = ?, complementoEndereco = ?, Endereco_idEndereco = ?, Time_idTime = ?, Especialidade_idEspecialidade = ?  WHERE idProfissional = ?', [nomeCompleto, nomeSocial, cpf, dataNascimento, raca, genero, nroEndereco, complementoEndereco, idEndereco, idTime, idEspecialidade, idProfissional], (error, results) =>{
+        database.query('UPDATE profissional SET nomeCompleto = ?, dataNascimento = ?, raca = ?, genero = ?, nroEndereco = ?, complementoEndereco = ?, Endereco_idEndereco = ?, Time_idTime = ?, Especialidade_idEspecialidade = ?  WHERE idProfissional = ?', [nomeCompleto, dataNascimento, raca, genero, nroEndereco, complementoEndereco, idEndereco, idTime, idEspecialidade, idProfissional], (error, results) =>{
             if (error) { rejeitado(error); return; }
             aceito(results);
         });
@@ -42,17 +55,29 @@ const alterarProfissional = (idProfissional, nomeCompleto, nomeSocial, cpf, data
 
 const excluirProfissional = (idProfissional) => {
     return new Promise((aceito, rejeitado) => {
-        database.query('UPDATE profissional SET isAtivo = 0 WHERE idProfissional = ?', [idProfissional], (error, results) =>{
+        database.query('DELETE FROM profissional WHERE idProfissional = ?', [idProfissional], (error, results) =>{
             if (error) { rejeitado(error); return; }
             aceito(results);
         });
     });
 }
 
+const removerTimeProfissional = (idProfissional) => {
+    return new Promise((aceito, rejeitado) => {
+        database.query('UPDATE profissional SET Time_idTime = null  WHERE idProfissional = ?', [idProfissional], (error, results) =>{
+            if (error) { rejeitado(error); return; }
+            aceito(results);
+        });
+    });
+}
+
+
 module.exports = {
     listarProfissionais,
     buscarProfissional,
+    buscarProfissionaisPorTime,
     inserirProfissional,
     alterarProfissional,
     excluirProfissional,
+    removerTimeProfissional,
 };
