@@ -1,5 +1,3 @@
-"use client";
-// Material UI
 import {
   Box,
   Container,
@@ -10,6 +8,7 @@ import {
   Tooltip,
   Fab,
   Typography,
+  Autocomplete,
 } from "@mui/material";
 import SearchBar from "@/components/SearchBar";
 import AddIcon from "@mui/icons-material/Add";
@@ -27,19 +26,24 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
-import Checkbox from "@mui/material/Checkbox";
 import Avatar from "@mui/material/Avatar";
 import React from "react";
 import { Time } from "@/models/Time";
 import { fetchDados } from "@/fetch";
 import { Profissional } from "@/models/Profissional";
+import TeamList from "@/components/TeamList";
+import TeamUserEditDialog from "@/components/TeamUserEditDialog";
 
 const PageTime = () => {
   const [searchValue, setSearchValue] = useState("");
   const [openConfirmationDialog, setOpenConfirmationDialog] = useState(false);
+  const [openUserAddDialog, setOpenUserAddDialog] = useState(false);
+  const [openUserDeleteDialog, setOpenUserDeleteDialog] = useState(false);
   const [confirmationDeleteId, setConfirmationDeleteId] = useState<
     number | null
   >(null);
+  const [userAddTimeId, setUserAddTimeId] = useState<number | null>(null);
+  const [userDeleteTimeId, setUserDeleteTimeId] = useState<number | null>(null);
   const [confirmationSaveId, setConfirmationSaveId] = useState<number | null>(
     null
   );
@@ -47,25 +51,13 @@ const PageTime = () => {
   const [name, setName] = useState("");
   const [times, setTimes] = useState<Time[]>([]);
   const [profissionais, setProfissionais] = useState<Profissional[]>([]);
+  const [profissionaisTime, setProfissionaisTime] = useState<Profissional[]>(
+    []
+  );
   const [bornDate, setBornDate] = useState<Date | null>(dayjs().toDate());
   const [formattedBornDate, setFormattedBornDate] = useState("");
-
-  /*Lista do modal*/
-  const [checked, setChecked] = React.useState<number[]>([]);
-
-  const handleToggle = (value: number) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
-
-    if (currentIndex === -1) {
-      newChecked.push(value);
-    } else {
-      newChecked.splice(currentIndex, 1);
-    }
-
-    setChecked(newChecked);
-  };
-  /* Lista do modal*/
+  const [selectedProfissional, setSelectedProfissional] =
+    useState<Profissional | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -76,7 +68,19 @@ const PageTime = () => {
         console.error("Erro ao listar times:", error);
       }
     };
+    const fetchProfissionais = async () => {
+      try {
+        const responseProfissionais = await fetchDados(
+          "profissional/listar",
+          "GET"
+        );
+        setProfissionais(responseProfissionais.result);
+      } catch (error) {
+        console.error("Erro ao listar profissionais", error);
+      }
+    };
     fetchData();
+    fetchProfissionais();
   }, []);
 
   const handleClickCadastrar = async () => {
@@ -86,11 +90,9 @@ const PageTime = () => {
         "GET"
       );
       const profissionais = responseProfissionais.result;
-      console.log("TODOS: ", profissionais);
       const profissionaisLivres = profissionais.filter(
         (profissional: Profissional) => profissional.idTime !== null
       );
-      console.log("LIVRES: ", profissionaisLivres);
       setProfissionais(profissionaisLivres);
     } catch (error) {
       console.error("Erro ao buscar time:", error);
@@ -104,8 +106,6 @@ const PageTime = () => {
   };
 
   const handleClickBuscar = async (id: number) => {
-    setChecked([]); // Limpa todos os checkeds
-
     const fetchData = async () => {
       try {
         const responseProjetos = await fetchDados(`time/buscar/${id}`, "GET");
@@ -116,22 +116,11 @@ const PageTime = () => {
       }
 
       try {
-        const responseProfissionais = await fetchDados(
-          "profissional/listar",
+        const responseProfissionaisTime = await fetchDados(
+          `profissional/listarPorTime/${id}`,
           "GET"
         );
-        const profissionais = responseProfissionais.result;
-        setProfissionais(profissionais);
-        const profissionaisMarcados = profissionais.filter(
-          (profissional: Profissional) => profissional.idTime === id
-        );
-        console.log("MARCADOS: ", profissionaisMarcados);
-        profissionaisMarcados.forEach((profissional: Profissional) => {
-          setChecked((prevChecked) => [
-            ...prevChecked,
-            profissional.idProfissional,
-          ]);
-        });
+        setProfissionaisTime(responseProfissionaisTime.result);
       } catch (error) {
         console.error("Erro ao buscar time:", error);
       }
@@ -143,30 +132,28 @@ const PageTime = () => {
     const responseAlteracao = await fetchDados(`time/alterar/${id}`, "PUT", {
       nomeTime: name,
     });
-    /*
-    // Tenta alterar todos os profissionais
-    const formattedBornDate = bornDate
-      ? dayjs(bornDate).format("YYYY-MM-DD")
-      : "";
-    setFormattedBornDate(formattedBornDate);
-    profissionais.map((profissional) => ({
-      const responseAlteracaoP = await fetchDados(`profissional/alterar/${profissional.idProfissional}`, "PUT", {
-        nomeCompleto: profissional.nomeCompleto,
-        cpf: profissional.cpf,
-        dataNascimento: formattedBornDate,
-        raca: profissional.raca,
-        genero: profissional.genero,
-        nroEndereco: profissional.nroEndereco,
-        complementoEndereco: profissional.complementoEndereco,
-        idEndereco: profissional.idEndereco,
-        idTime: profissional.idTime,
-        idEspecialidade: profissional.especialidade.idEspecialidade,
-      })
-    }));
-    */
-    console.log("Alterou time");
-    const responseListar = await fetchDados("time/listar", "GET");
-    setTimes(responseListar.result);
+  };
+
+  const handleClickAdicionarProfissionalTime = async (id: number) => {
+    const responseAlteracao = await fetchDados(
+      `profissional/${selectedProfissional?.idProfissional}/alterarTime/${id}`,
+      "PUT",
+      {
+        nomeTime: name,
+      }
+    );
+    console.log("Alterou papel do profissional", responseAlteracao);
+  };
+
+  const handleClickRemoverProfissionalTime = async () => {
+    const responseAlteracao = await fetchDados(
+      `profissional/${selectedProfissional?.idProfissional}/alterarTime/null`,
+      "PUT",
+      {
+        nomeTime: name,
+      }
+    );
+    console.log("Removeu profissional do time", responseAlteracao);
   };
 
   const handleClickExcluir = async (id: number) => {
@@ -211,9 +198,12 @@ const PageTime = () => {
             <Typography sx={{ marginLeft: "0.1rem" }}>Times</Typography>
             <Box
               padding={1}
-              sx={{ backgroundColor: "background.paper", borderRadius: "1rem" }}
+              sx={{
+                backgroundColor: "background.paper",
+                borderRadius: "1rem",
+              }}
             >
-              <CustomList
+              <TeamList
                 items={times.map((time) => ({
                   name: time.nomeTime,
                   id: time.idTime,
@@ -227,8 +217,17 @@ const PageTime = () => {
                   setConfirmationDeleteId(id);
                   setOpenConfirmationDialog(true);
                 }}
+                onAddUser={(id) => {
+                  setUserAddTimeId(id);
+                  setOpenUserAddDialog(true);
+                }}
+                onDeleteUser={(id) => {
+                  setUserDeleteTimeId(id);
+                  setOpenUserDeleteDialog(true);
+                }}
                 searchValue={searchValue}
-              ></CustomList>
+              />
+
               <ConfirmationDialog
                 dialogText="Confirme a exclusão do time"
                 open={openConfirmationDialog}
@@ -247,12 +246,8 @@ const PageTime = () => {
                 setConfirmation={(confirmed) => {
                   if (confirmed && confirmationSaveId !== null) {
                     handleClickAlterar(confirmationSaveId);
-                    setProfissionais([]);
-                    setChecked([]);
                   } else if (confirmed && confirmationSaveId === null) {
                     handleClickCadastrar();
-                    setProfissionais([]);
-                    setChecked([]);
                   }
                   setConfirmationSaveId(null);
                 }}
@@ -295,7 +290,7 @@ const PageTime = () => {
                           bgcolor: "#edf2fb",
                         }}
                       >
-                        {profissionais.map((value) => {
+                        {profissionaisTime.map((value) => {
                           const labelId = `checkbox-list-secondary-label-${value}`;
                           return (
                             <ListItem
@@ -303,21 +298,9 @@ const PageTime = () => {
                               sx={{
                                 boxShadow: "0px 1px 1px 0px rgba(0,0,0,0.20)",
                               }}
-                              secondaryAction={
-                                <Checkbox
-                                  edge="end"
-                                  onChange={handleToggle(value.idProfissional)}
-                                  checked={
-                                    checked.indexOf(value.idProfissional) !== -1
-                                  }
-                                  inputProps={{ "aria-labelledby": labelId }}
-                                />
-                              }
                               disablePadding
                             >
-                              <ListItemButton
-                                onClick={handleToggle(value.idProfissional)}
-                              >
+                              <ListItemButton>
                                 <ListItemAvatar>
                                   <Avatar
                                     alt={`Avatar`}
@@ -337,6 +320,40 @@ const PageTime = () => {
                   </Box>
                 </Grid>
               </FormDialog>
+              <TeamUserEditDialog
+                selectText="Selecione o profissional"
+                title="Adicionar Profissional ao Time"
+                setSelectedProfissional={setSelectedProfissional}
+                selectedProfissional={selectedProfissional}
+                open={openUserAddDialog}
+                profissionais={profissionais}
+                setOpen={setOpenUserAddDialog}
+                setConfirmation={(confirmed) => {
+                  if (confirmed && userAddTimeId !== null) {
+                    handleClickAdicionarProfissionalTime(userAddTimeId);
+                    console.log("adicionar profissional ");
+                  }
+                  setUserAddTimeId(null);
+                  setSelectedProfissional(null);
+                }}
+              />
+              <TeamUserEditDialog
+                selectText="Selecione o profissional"
+                title="Remover Profissional do Time"
+                setSelectedProfissional={setSelectedProfissional}
+                selectedProfissional={selectedProfissional}
+                open={openUserDeleteDialog}
+                profissionais={profissionaisTime}
+                setOpen={setOpenUserDeleteDialog}
+                setConfirmation={(confirmed) => {
+                  if (confirmed && userDeleteTimeId !== null) {
+                    handleClickRemoverProfissionalTime();
+                    console.log("remover profissional");
+                  }
+                  setUserDeleteTimeId(null);
+                  setSelectedProfissional(null);
+                }}
+              />
             </Box>
             <Fab
               color="secondary"
@@ -344,8 +361,8 @@ const PageTime = () => {
               onClick={async (id) => {
                 setConfirmationSaveId(null);
                 setOpenFormDialog(true);
+                setName("");
                 setProfissionais([]);
-                setChecked([]);
               }}
             >
               <AddIcon />
@@ -374,5 +391,4 @@ const PageTime = () => {
     </>
   );
 };
-
 export default PageTime;
