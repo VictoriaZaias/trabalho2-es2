@@ -44,9 +44,9 @@ const inserirProfissional = (nomeCompleto, dataNascimento, raca, genero, nroEnde
     });
 }
 
-const alterarProfissional = (idProfissional, nomeCompleto, dataNascimento, raca, genero, nroEndereco, complementoEndereco, idEndereco, idEspecialidade, idTime) => {
+const alterarProfissional = (idProfissional, nomeCompleto, dataNascimento, raca, genero, nroEndereco, complementoEndereco, idEndereco, idEspecialidade) => {
     return new Promise((aceito, rejeitado) => {
-        database.query('UPDATE profissional SET nomeCompleto = ?, dataNascimento = ?, raca = ?, genero = ?, nroEndereco = ?, complementoEndereco = ?, Endereco_idEndereco = ?, Time_idTime = ?, Especialidade_idEspecialidade = ?  WHERE idProfissional = ?', [nomeCompleto, dataNascimento, raca, genero, nroEndereco, complementoEndereco, idEndereco, idTime, idEspecialidade, idProfissional], (error, results) =>{
+        database.query('UPDATE profissional SET nomeCompleto = ?, dataNascimento = ?, raca = ?, genero = ?, nroEndereco = ?, complementoEndereco = ?, Endereco_idEndereco = ?, Especialidade_idEspecialidade = ?  WHERE idProfissional = ?', [nomeCompleto, dataNascimento, raca, genero, nroEndereco, complementoEndereco, idEndereco, idEspecialidade, idProfissional], (error, results) =>{
             if (error) { rejeitado(error); return; }
             aceito(results);
         });

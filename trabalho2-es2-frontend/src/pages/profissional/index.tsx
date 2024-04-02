@@ -262,7 +262,6 @@ const PageProfissional = () => {
         complementoEndereco: "",
         idEndereco: responseEndereco.result.idEndereco,
         idEspecialidade: especialidadeSelecionada,
-        idTime: -1,
       }
     );
     console.log("Alterou profissional");
