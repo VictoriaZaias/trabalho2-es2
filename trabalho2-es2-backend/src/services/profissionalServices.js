@@ -62,7 +62,7 @@ const adicionarTimeProfissional = (idProfissional, idTime) => {
     });
 }
 
-const deletarTimeProfissional = (idProfissional) => {
+const excluirTimeProfissional = (idProfissional) => {
     return new Promise((aceito, rejeitado) => {
         database.query('UPDATE profissional SET Time_idTime = NULL  WHERE idProfissional = ?', [idProfissional], (error, results) =>{
             if (error) { rejeitado(error); return; }
@@ -80,16 +80,6 @@ const excluirProfissional = (idProfissional) => {
     });
 }
 
-const removerTimeProfissional = (idProfissional) => {
-    return new Promise((aceito, rejeitado) => {
-        database.query('UPDATE profissional SET Time_idTime = null  WHERE idProfissional = ?', [idProfissional], (error, results) =>{
-            if (error) { rejeitado(error); return; }
-            aceito(results);
-        });
-    });
-}
-
-
 module.exports = {
     listarProfissionais,
     listarProfissionaisPorTime,
@@ -97,7 +87,6 @@ module.exports = {
     inserirProfissional,
     alterarProfissional,
     adicionarTimeProfissional,
-    deletarTimeProfissional,
+    excluirTimeProfissional,
     excluirProfissional,
-    removerTimeProfissional,
 };

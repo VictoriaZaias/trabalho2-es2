@@ -52,7 +52,7 @@ const excluirProjeto = (idProjeto) => {
     });
 }
 
-const buscarProjetosPorTime= (idTime) => {
+const listarProjetosPorTime= (idTime) => {
     return new Promise((aceito, rejeitado) => {
         database.query('SELECT * FROM projeto WHERE projeto.Time_idTime = ?', [idTime], (error, results) =>{
             if (error) { rejeitado(error); return; }
@@ -69,7 +69,7 @@ const buscarProjetosPorTime= (idTime) => {
 module.exports = {
     listarProjetos,
     buscarProjeto,
-    buscarProjetosPorTime,
+    listarProjetosPorTime,
     inserirProjeto,
     alterarProjeto,
     excluirProjeto,

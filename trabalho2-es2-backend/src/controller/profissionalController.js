@@ -151,7 +151,7 @@ const alterarProfissionalTime = async(req, res) => {
     let idTime = req.params.idT;
 
     if(idTime === "null") {
-        await profissionalServices.deletarTimeProfissional(idProfissional);
+        await profissionalServices.excluirTimeProfissional(idProfissional);
         json.result = {
             idProfissional,
             idTime,

@@ -1,5 +1,5 @@
-const { listarProfissionaisPorTime, alterarProfissional, removerTimeProfissional } = require('../services/profissionalServices');
-const { buscarProjetosPorTime, excluirProjeto } = require('../services/projetoServices');
+const { listarProfissionaisPorTime, excluirTimeProfissional } = require('../services/profissionalServices');
+const { listarProjetosPorTime, excluirProjeto } = require('../services/projetoServices');
 const timeServices = require('../services/timeServices');
 
 const listarTimes = async (req, res) => {
@@ -73,52 +73,38 @@ const alterarTime = async (req, res) => {
 const excluirTime = async (req, res) => {
     let json = { error: '', result: {} };
     let idTime = req.params.id;
-    let projetosTime = await buscarProjetosPorTime(idTime);
+    let projetosTime = await listarProjetosPorTime(idTime);
 
-    console.log("Excluir Time");
-    console.log(projetosTime);
-
-    for (let i in projetosTime) {
-        if (projetosTime[i].isConcluido === 0) {//se UM projeto ainda não for concluido, não pode deletar o time!
-            res.status(500).send('Ocorreu um erro ao excluir o time: Há projetos pendentes, portanto não pode ser excluído.');
-            return;
+    if(projetosTime !== null) {
+        for (let i in projetosTime) {
+            if (projetosTime[i].isConcluido === 0) {//se UM projeto ainda não for concluido, não pode deletar o time!
+                json.error = 'Ocorreu um erro ao excluir o time: Há projetos pendentes, portanto não pode ser excluído.';
+                res.json(json);
+                return;
+            }
         }
-
-    }
-
-    //Exclui todos os projetos
-    for (let i in projetosTime) {
-        await excluirProjeto(projetosTime[i].idProjeto)
+        //Exclui todos os projetos
+        for (let i in projetosTime) {
+            await excluirProjeto(projetosTime[i].idProjeto)
+        }
     }
 
     //Obtem os profissionais que estão no time atual:
-    let profissionais = listarProfissionaisPorTime(idTime);
-    console.log(profissionais);
-
-    for (let i in profissionais) {
-        let idProfissional = profissionais[i].idProfissional;
-        // let nomeCompleto = profissionais[i].nomeCompleto;
-        // let dataNascimento = profissionais[i].dataNascimento;
-        // let raca = profissionais[i].raca;
-        // let genero = profissionais[i].genero;
-        // let nroEndereco = profissionais[i].nroEndereco;
-        // let complementoEndereco = profissionais[i].complementoEndereco;
-        // let idEndereco =  profissionais[i].Endereco_idEndereco;
-        // let idEspecialidade = profissionais[i].Especialidade_idEspecialidade;
-        // let idtime = null;
-        // alterarProfissional(idProfissional,nomeCompleto,)
-       await removerTimeProfissional(idProfissional);
+    let profissionais = await listarProfissionaisPorTime(idTime);
+    
+    if(profissionais !== null) {
+        for (let i in profissionais) {
+            let idProfissional = profissionais[i].idProfissional;
+        await excluirTimeProfissional(idProfissional);
+        }
     }
+
     try {
         await timeServices.excluirTime(idTime);
-        res.status(200).send('Registro de time excluído com sucesso!');
     } catch (error) {
-        // Se ocorrer um erro durante a exclusão, envie uma resposta de erro
-        console.error('Erro ao excluir o registro de time:', error);
-        res.status(500).send('Ocorreu um erro ao excluir o registro de time.');
+        json.error = 'Ocorreu um erro ao excluir o registro de time.';
     }
-
-    // res.json(json);
+    res.json(json);
 }
 
 module.exports = {
