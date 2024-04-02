@@ -150,15 +150,23 @@ const alterarProfissionalTime = async(req, res) => {
     let idProfissional = req.params.idP;
     let idTime = req.params.idT;
 
-    let timeExiste = await timeServices.buscarTime(idTime);
-    if(timeExiste){
-        await profissionalServices.alterarProfissionalTime(idProfissional, idTime);
+    if(idTime === "null") {
+        await profissionalServices.deletarTimeProfissional(idProfissional);
         json.result = {
             idProfissional,
             idTime,
         };
-    }else{
-        json.error = 'Time mandado não existe!';
+    } else {
+        let timeExiste = await timeServices.buscarTime(idTime);
+        if(timeExiste) {
+            await profissionalServices.adicionarTimeProfissional(idProfissional, idTime);
+            json.result = {
+                idProfissional,
+                idTime,
+            };
+        }else{
+            json.error = 'Time mandado não existe!';
+        }
     }
     res.json(json);
 }
