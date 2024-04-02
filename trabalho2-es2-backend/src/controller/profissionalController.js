@@ -27,6 +27,32 @@ const listarProfissionais = async (req, res) => {
     res.json(json);
 }
 
+const listarProfissionaisPorTime = async (req, res) => {
+    let json = {error:'', result:[]};
+
+    let idTime = req.params.id;
+    let profissionais = await profissionalServices.listarProfissionaisPorTime(idTime);
+
+    for(let i in profissionais){
+        let time = await timeServices.buscarTime(profissionais[i].Time_idTime);
+        let especialidade = await especialidadeServices.buscarEspecialidade(profissionais[i].Especialidade_idEspecialidade);
+        json.result.push({
+            idProfissional: profissionais[i].idProfissional,
+            nomeCompleto: profissionais[i].nomeCompleto,
+            dataNascimento: profissionais[i].dataNascimento,
+            raca: profissionais[i].raca,
+            genero: profissionais[i].genero,
+            nroEndereco: profissionais[i].nroEndereco,
+            complementoEndereco: profissionais[i].complementoEndereco,
+            idEndereco : profissionais[i].Endereco_idEndereco,
+            idTime: time.idTime,
+            time: time.nomeTime,
+            especialidade: especialidade.tipoEspecialidade,
+        });
+    }  
+    res.json(json);
+}
+
 const buscarProfissional = async (req, res) => {
     let json = { error: '', result: {} };
 
@@ -127,6 +153,7 @@ const excluirProfissional = async(req, res) => {
 }
 module.exports = {
     listarProfissionais,
+    listarProfissionaisPorTime,
     buscarProfissional,
     inserirProfissional,
     alterarProfissional,

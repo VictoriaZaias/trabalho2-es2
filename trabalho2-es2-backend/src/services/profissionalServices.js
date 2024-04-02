@@ -9,12 +9,12 @@ const listarProfissionais = () => {
     });
 }
 
-const buscarProfissional = (idProfissional) => {
+const listarProfissionaisPorTime = (idTime) => {
     return new Promise((aceito, rejeitado) => {
-        database.query('SELECT * FROM profissional WHERE profissional.idProfissional = ?', [idProfissional], (error, results) =>{
+        database.query('SELECT * FROM profissional WHERE profissional.Time_idTime = ?', [idTime], (error, results) =>{
             if (error) { rejeitado(error); return; }
             if (results.length > 0){
-                aceito(results[0]);
+                aceito(results);
             }else{
                 aceito(false);
             }
@@ -22,12 +22,12 @@ const buscarProfissional = (idProfissional) => {
     });
 }
 
-const listarProfissionaisPorTime = (idTime) => {
+const buscarProfissional = (idProfissional) => {
     return new Promise((aceito, rejeitado) => {
-        database.query('SELECT * FROM profissional WHERE profissional.Time_idTime = ?', [idTime], (error, results) =>{
+        database.query('SELECT * FROM profissional WHERE profissional.idProfissional = ?', [idProfissional], (error, results) =>{
             if (error) { rejeitado(error); return; }
             if (results.length > 0){
-                aceito(results);
+                aceito(results[0]);
             }else{
                 aceito(false);
             }
@@ -74,8 +74,8 @@ const removerTimeProfissional = (idProfissional) => {
 
 module.exports = {
     listarProfissionais,
-    buscarProfissional,
     listarProfissionaisPorTime,
+    buscarProfissional,
     inserirProfissional,
     alterarProfissional,
     excluirProfissional,
