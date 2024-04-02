@@ -1,4 +1,4 @@
-const { buscarProfissionaisPorTime, alterarProfissional, removerTimeProfissional } = require('../services/profissionalServices');
+const { listarProfissionaisPorTime, alterarProfissional, removerTimeProfissional } = require('../services/profissionalServices');
 const { buscarProjetosPorTime, excluirProjeto } = require('../services/projetoServices');
 const timeServices = require('../services/timeServices');
 
@@ -92,7 +92,7 @@ const excluirTime = async (req, res) => {
     }
 
     //Obtem os profissionais que estão no time atual:
-    let profissionais = buscarProfissionaisPorTime(idTime);
+    let profissionais = listarProfissionaisPorTime(idTime);
     console.log(profissionais);
 
     for (let i in profissionais) {

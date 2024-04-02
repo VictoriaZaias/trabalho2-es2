@@ -22,7 +22,7 @@ const buscarProfissional = (idProfissional) => {
     });
 }
 
-const buscarProfissionaisPorTime = (idTime) => {
+const listarProfissionaisPorTime = (idTime) => {
     return new Promise((aceito, rejeitado) => {
         database.query('SELECT * FROM profissional WHERE profissional.Time_idTime = ?', [idTime], (error, results) =>{
             if (error) { rejeitado(error); return; }
@@ -75,7 +75,7 @@ const removerTimeProfissional = (idProfissional) => {
 module.exports = {
     listarProfissionais,
     buscarProfissional,
-    buscarProfissionaisPorTime,
+    listarProfissionaisPorTime,
     inserirProfissional,
     alterarProfissional,
     excluirProfissional,
