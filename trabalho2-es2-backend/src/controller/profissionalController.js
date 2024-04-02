@@ -144,6 +144,25 @@ const alterarProfissional = async(req, res) => {
     res.json(json);
 }
 
+const alterarProfissionalTime = async(req, res) => {
+    let json = {error:'', result:{}};
+
+    let idProfissional = req.params.idP;
+    let idTime = req.params.idT;
+
+    let timeExiste = await timeServices.buscarTime(idTime);
+    if(timeExiste){
+        await profissionalServices.alterarProfissionalTime(idProfissional, idTime);
+        json.result = {
+            idProfissional,
+            idTime,
+        };
+    }else{
+        json.error = 'Time mandado não existe!';
+    }
+    res.json(json);
+}
+
 const excluirProfissional = async(req, res) => {
     let json = {error:'', result:{}};
 
@@ -157,5 +176,6 @@ module.exports = {
     buscarProfissional,
     inserirProfissional,
     alterarProfissional,
+    alterarProfissionalTime,
     excluirProfissional,
 };

@@ -8,6 +8,7 @@ router.get('/listarPorTime/:id', profissionalController.listarProfissionaisPorTi
 router.get('/buscar/:id', profissionalController.buscarProfissional);
 router.post('/inserir', profissionalController.inserirProfissional);
 router.put('/alterar/:id', profissionalController.alterarProfissional);
+router.put('/:idP/alterarTime/:idT', profissionalController.alterarProfissionalTime);
 router.delete('/excluir/:id', profissionalController.excluirProfissional);
 
 module.exports = router;
